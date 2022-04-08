@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AuthMiddleware;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware([AuthMiddleware::class])->group(function () {
+
+    Route::controller(ProductController::class)->group(function () {
+
+        Route::prefix('products')->group(function () {
+
+            Route::get('/', 'list');
+
+            Route::post('/', 'create');
+
+            Route::get('/{product:uuid}', 'get');
+
+            Route::put('/{product:uuid}', 'update');
+
+            Route::delete('/{product:uuid}', 'delete');
+        });
+    });
+
+    Route::controller(CategoryController::class)->group(function () {
+
+        Route::prefix('categories')->group(function () {
+
+            Route::post('/', 'create');
+
+            Route::get('/', 'list');
+
+            Route::get('/{category:uuid}', 'get');
+
+            Route::put('/{category:uuid}', 'update');
+
+            Route::delete('/{category:uuid}', 'delete');
+        });
+    });
 });
