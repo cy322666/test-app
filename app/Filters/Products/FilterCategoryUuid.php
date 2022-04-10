@@ -4,26 +4,33 @@ namespace App\Filters\Products;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FilterCategoryUuid extends FilterAbstract implements FilterInterface
 {
     private string $category_uuid;
-    private Model $category;
 
-    public function search(): Builder
+    public function search(): Builder|BelongsToMany
     {
         $this->initParams();
 
-        return $this->category->products()->getQuery();
+        $category = Category::query()
+            ->where('uuid', $this->category_uuid)
+            ->first();
+
+        return $category->products();
     }
 
     protected function initParams()
     {
         $this->category_uuid = $this->request->input('category_uuid');
 
-        $this->category = Category::query()
-            ->where('uuid', $this->category_uuid)
-            ->firstOrFail();
+        if(strlen($this->category_uuid) < 3) {
+
+            throw new HttpResponseException(
+                response()->json('Category not exists', 422)
+            );
+        }
     }
 }
