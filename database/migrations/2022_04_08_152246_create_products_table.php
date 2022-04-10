@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->uuid('uuid')->nullable();
             $table->string('name')->nullable();
             $table->float('price')->nullable();
-            $table->boolean('is_publish')->nullable(false);
+            $table->boolean('is_publish')->default(false);
             $table->boolean('is_deleted')->default(false);
 
             $table->index('uuid');
