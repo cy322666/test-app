@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateProductRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class CreateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +24,25 @@ class CreateProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name'  => 'required|max:255',
+            'price' => 'required|numeric',
+            'categories' => [
+                'required',
+                'array',
+                'min:'.Category::MIN_COUNT_CATEGORY,
+                'max:'.Category::MAX_COUNT_CATEGORY,
+                ],
+            'categories.*' => 'required|uuid|uuid:categories',
         ];
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new HttpResponseException(
+            response()->json($validator->errors(), 422)
+        );
     }
 }
