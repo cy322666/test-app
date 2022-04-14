@@ -10,7 +10,7 @@ trait Uuid
     {
         self::creating(function ($model) {
 
-            $model->uuid = (string)UuidService::uuid4();
+            $model->id = (string)UuidService::uuid4();
         });
     }
 }
