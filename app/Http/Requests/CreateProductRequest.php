@@ -35,7 +35,7 @@ class CreateProductRequest extends FormRequest
                 'min:'.Category::MIN_COUNT_CATEGORY,
                 'max:'.Category::MAX_COUNT_CATEGORY,
                 ],
-            'categories.*' => 'required|uuid|uuid:categories',
+            'categories.*' => 'required|uuid',
         ];
     }
 

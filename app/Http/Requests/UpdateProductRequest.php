@@ -34,7 +34,7 @@ class UpdateProductRequest extends FormRequest
                 'min:'.Category::MIN_COUNT_CATEGORY,
                 'max:'.Category::MAX_COUNT_CATEGORY,
             ],
-            'categories.*' => 'uuid|uuid|uuid:categories',
+            'categories.*' => 'uuid|uuid',
         ];
     }
 

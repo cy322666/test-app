@@ -24,7 +24,7 @@ class ProductFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_uuid' => 'uuid|uuid:categories',
+            'category_uuid' => 'uuid|id:categories',
             'is_publish'    => 'string|max:1',
             'product_name'  => 'string|min:3',
             'category_name' => 'string|min:3',
