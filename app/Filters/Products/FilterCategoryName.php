@@ -4,41 +4,18 @@ namespace App\Filters\Products;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FilterCategoryName extends FilterAbstract implements FilterInterface
+class FilterCategoryName implements FilterInterface
 {
-    private string $category_name;
-    private Builder $categories;
-
-    public function search(): Builder
+    public function searchByRequest(FormRequest $request): Builder|Relation
     {
-        $this->initParams();
+        return Product::query()
+            ->whereHas('categories', function (Builder $query) use ($request) {
 
-        return $this->categories;
-    }
-
-    protected function initParams()
-    {
-        $this->category_name = $this->request->input('category_name');
-
-        $this->validateParams();
-
-        $this->categories = Product::query()
-            ->whereHas('categories', function (Builder $query) {
-
-                $query->where('name', 'like', "%{$this->category_name}%");
-
-        });
-    }
-
-    protected function validateParams()
-    {
-        if(strlen($this->category_name) < 3) {
-
-            throw new HttpResponseException(
-                response()->json('Category name invalid', 422)
-            );
-        }
+                $query->where('name', 'like', "%{$request->category_name}%");
+            });
     }
 }

@@ -10,12 +10,12 @@ abstract class FilterFactory
      * Исходя из запрошенного фильтра отдает объект для фильтрации Products
      * Если тип фильтрации не распознан отдает класс для выдачи всех Products
      *
-     * @param Request $request Объект запроса для получения параметров фильтрации
+     * @param string|null $filterName Название фильтра
      * @return FilterInterface Интерфейс для классов - фильтров
      */
-    public static function getFilter(Request $request): FilterInterface
+    public static function getFilter(?string $filterName): FilterInterface
     {
-        return match ($request->input('filter')) {
+        return match ($filterName) {
 
             'product_name'  => new FilterProductName(),
             'category_uuid' => new FilterCategoryUuid(),

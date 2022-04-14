@@ -5,33 +5,12 @@ namespace App\Filters\Products;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FilterProductName extends FilterAbstract implements FilterInterface
+class FilterProductName implements FilterInterface
 {
-    private string $product_name;
-
-    public function search(): Builder|Relation
+    public function searchByRequest(FormRequest $request): Builder|Relation
     {
-        $this->initParams();
-
-        return Product::query()->where('name', 'LIKE', "%{$this->product_name}%");
-    }
-
-    protected function initParams()
-    {
-        $this->product_name = $this->request->input('product_name');
-
-        $this->validateParams();
-    }
-
-    protected function validateParams()
-    {
-        if(strlen($this->product_name) < 3) {
-
-            throw new HttpResponseException(
-                response()->json('Product name invalid', 422)
-            );
-        }
+        return Product::query()->where('name', 'LIKE', "%{$request->product_name}%");
     }
 }

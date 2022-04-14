@@ -4,20 +4,13 @@ namespace App\Filters\Products;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FilterPublish extends FilterAbstract implements FilterInterface
+class FilterPublish implements FilterInterface
 {
-    private bool $is_publish;
-
-    public function search(): Builder
+    public function searchByRequest(FormRequest $request): Builder|Relation
     {
-        $this->initParams();
-
-        return Product::query()->where('is_publish', $this->is_publish);
-    }
-
-    protected function initParams()
-    {
-        $this->is_publish = $this->request->input('is_publish') === '1';
+        return Product::query()->where('is_publish', $request->is_publish);
     }
 }

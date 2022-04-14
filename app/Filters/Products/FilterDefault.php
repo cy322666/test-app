@@ -4,10 +4,12 @@ namespace App\Filters\Products;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FilterDefault extends FilterAbstract implements FilterInterface
+class FilterDefault implements FilterInterface
 {
-    public function search(): Builder
+    public function searchByRequest(FormRequest $request): Builder|Relation
     {
         return Product::query();
     }

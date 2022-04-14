@@ -4,20 +4,13 @@ namespace App\Filters\Products;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FilterDeleted extends FilterAbstract implements FilterInterface
+class FilterDeleted implements FilterInterface
 {
-    private bool $is_deleted;
-
-    public function search(): Builder
+    public function searchByRequest(FormRequest $request): Builder|Relation
     {
-        $this->initParams();
-
-        return Product::query()->where('is_deleted', $this->is_deleted);
-    }
-
-    protected function initParams()
-    {
-        $this->is_deleted = $this->request->input('is_deleted') === '1';
+        return $request->is_deleted === '1' ?  Product::onlyTrashed() : Product::query();
     }
 }
