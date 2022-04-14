@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Middleware\AuthMiddleware;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +26,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
             Route::post('/', 'create');
 
-            Route::get('/{product:uuid}', 'get');
+            Route::get('/{product:id}', 'get');
 
-            Route::put('/{product:uuid}', 'update');
+            Route::put('/{product:id}', 'update');
 
-            Route::delete('/{product:uuid}', 'delete');
+            Route::delete('/{product:id}', 'delete');
         });
     });
 
@@ -43,11 +42,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
             Route::get('/', 'list');
 
-            Route::get('/{category:uuid}', 'get');
+            Route::get('/{category:id}', 'get');
 
-            Route::put('/{category:uuid}', 'update');
+            Route::put('/{category:id}', 'update');
 
-            Route::delete('/{category:uuid}', 'delete');
+            Route::delete('/{category:id}', 'delete');
         });
     });
 });
