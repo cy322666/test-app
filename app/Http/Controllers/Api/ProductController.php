@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Filters\Products\FilterFactory;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\ProductFilterRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -9,7 +10,6 @@ use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Routing\Controller;
-use App\Filters\Products\FilterFactory;
 
 class ProductController extends Controller
 {
