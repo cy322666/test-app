@@ -12,7 +12,7 @@ class FilterCategoryUuid implements FilterInterface
     public function searchByRequest(FormRequest $request): Builder|Relation
     {
         $category = Category::query()
-            ->where('uuid', $request->category_uuid)
+            ->where('id', $request->category_uuid)
             ->first();
 
         return $category->products();
