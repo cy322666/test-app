@@ -14,18 +14,15 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
-            $table->uuid('uuid')->nullable();
             $table->string('name')->nullable();
             $table->float('price')->nullable();
             $table->boolean('is_publish')->default(false);
             $table->boolean('is_deleted')->default(false);
 
-            $table->index('uuid');
             $table->index('name');
             $table->index('is_publish');
-            $table->index('is_deleted');
         });
     }
 
