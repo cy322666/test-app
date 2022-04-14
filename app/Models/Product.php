@@ -13,16 +13,14 @@ class Product extends Model
     use HasFactory, Uuid, SoftDeletes;
 
     protected $fillable = [
-        'uuid',
         'name',
         'price',
         'is_publish',
-        'is_deleted',
     ];
 
-    protected $hidden = [
-        'id',
-    ];
+    public $incrementing = false;
+
+    protected $keyType = 'uuid';
 
     protected $dates = [
         'deleted_at'
@@ -59,7 +57,7 @@ class Product extends Model
             $this->categories()->attach([
 
                 'uuid' => Category::query()
-                    ->where('uuid', $category_uuid)
+                    ->find($category_uuid)
                     ->firstOrFail()
                     ?->id,
             ]);

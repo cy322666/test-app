@@ -16,13 +16,12 @@ class Category extends Model
     const MIN_COUNT_CATEGORY = 2;
     const MAX_COUNT_CATEGORY = 10;
 
-    protected $fillable = [
-        'uuid',
-        'name',
-    ];
+    public $incrementing = false;
 
-    protected $hidden = [
-        'id',
+    protected $keyType = 'uuid';
+
+    protected $fillable = [
+        'name',
     ];
 
     public function products(): BelongsToMany
