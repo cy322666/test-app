@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\ProductFilterRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Filters\Products\FilterFactory;
 
@@ -24,9 +24,7 @@ class ProductController extends Controller
 
     public function delete(Product $product)
     {
-        $product->is_deleted = true;
-        $product->is_published = false;
-        $product->save();
+        $product->delete();
     }
 
     public function update(UpdateProductRequest $request, Product $product): ProductResource
@@ -47,14 +45,14 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    public function list(Request $request): ProductCollection
+    public function list(ProductFilterRequest $request): ProductCollection
     {
-        $filter = FilterFactory::getFilter($request);
+        $filter = FilterFactory::getFilter($request->input('filter'));
 
         return new ProductCollection(
             $filter
-                ->setRequest($request)
-                ->search()
+                ->searchByRequest($request)
+                ->with('categories')
                 ->orderBy('created_at')
                 ->paginate()
         );
